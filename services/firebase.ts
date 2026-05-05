@@ -15,6 +15,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+//export const auth = initializeAuth(app, {
+//  persistence: getReactNativePersistence(AsyncStorage),
+//});
+// Mock temporário — substituir quando tiver as chaves Firebase
+export const auth = {
+    currentUser: null,
+  } as any;

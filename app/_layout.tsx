@@ -10,7 +10,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const unsubscribe = initAuthListener();
-    return unsubscribe; // limpa o listener ao desmontar
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
