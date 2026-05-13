@@ -62,7 +62,7 @@ const FERRAMENTAS: Ferramenta[] = [
     icone: 'calendar-outline',
     cor: '#991B1B',
     bg: '#FEE2E2',
-    rota: '/(tabs)/ferramentas/cronograma/onboarding',
+    rota: '/(tabs)/ferramentas/cronograma',
   },
 ];
 
