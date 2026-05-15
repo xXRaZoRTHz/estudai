@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Flashcard {
   id: string;
@@ -54,8 +56,10 @@ function calcularProximaRevisao(card: Flashcard, qualidade: 0 | 3 | 5): Partial<
   };
 }
 
-export const useFlashcardsStore = create<FlashcardsState>((set) => ({
-  baralhos: [],
+export const useFlashcardsStore = create<FlashcardsState>()(
+  persist(
+    (set) => ({
+      baralhos: [],
 
   criarBaralho: (dados) => {
     const id = Date.now().toString();
@@ -132,4 +136,11 @@ export const useFlashcardsStore = create<FlashcardsState>((set) => ({
       ),
     }));
   },
-}));
+  
+    }),
+        {
+        name: 'flashcards-storage',
+        storage: createJSONStorage(() => AsyncStorage),
+        }
+    )
+);

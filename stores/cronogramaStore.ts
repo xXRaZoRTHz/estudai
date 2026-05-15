@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface SessaoEstudo {
   id: string;
@@ -31,8 +33,10 @@ interface CronogramaState {
   toggleSessaoConcluida: (cronogramaId: string, sessaoId: string) => void;
 }
 
-export const useCronogramaStore = create<CronogramaState>((set) => ({
-  cronogramas: [],
+export const useCronogramaStore = create<CronogramaState>()(
+    persist(
+        (set) => ({
+        cronogramas: [],
 
   criarCronograma: (dados) => {
     const id = Date.now().toString();
@@ -61,4 +65,10 @@ export const useCronogramaStore = create<CronogramaState>((set) => ({
       ),
     }));
   },
-}));
+    }),
+        {
+        name: 'cronograma-storage',
+        storage: createJSONStorage(() => AsyncStorage),
+        }
+    )
+);

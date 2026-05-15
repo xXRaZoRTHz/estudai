@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Resumo {
   id: string;
@@ -16,8 +18,10 @@ interface ResumosState {
   apagarTodos: () => void;
 }
 
-export const useResumosStore = create<ResumosState>((set) => ({
-  resumos: [],
+export const useResumosStore = create<ResumosState>()(
+  persist(
+    (set) => ({
+      resumos: [],
 
   criarResumo: (dados) => {
     const id = Date.now().toString();
@@ -31,4 +35,10 @@ export const useResumosStore = create<ResumosState>((set) => ({
   },
 
   apagarTodos: () => set({ resumos: [] }),
-}));
+}),
+    {
+      name: 'resumos-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

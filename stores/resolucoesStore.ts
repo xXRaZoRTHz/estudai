@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface PassoResolucao {
   numero: number;
@@ -23,8 +25,10 @@ interface ResolucoesState {
   apagarTodas: () => void;
 }
 
-export const useResolucoesStore = create<ResolucoesState>((set) => ({
-  resolucoes: [],
+export const useResolucoesStore = create<ResolucoesState>()(
+  persist(
+    (set) => ({
+      resolucoes: [],
 
   criarResolucao: (dados) => {
     const id = Date.now().toString();
@@ -38,4 +42,10 @@ export const useResolucoesStore = create<ResolucoesState>((set) => ({
   },
 
   apagarTodas: () => set({ resolucoes: [] }),
-}));
+}),
+    {
+      name: 'resolucoes-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);

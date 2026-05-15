@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface Mensagem {
   id: string;
@@ -23,8 +25,10 @@ interface ChatState {
   apagarTodas: () => void;
 }
 
-export const useChatStore = create<ChatState>((set, get) => ({
-  conversas: [],
+export const useChatStore = create<ChatState>()(
+  persist(
+    (set, get) => ({
+      conversas: [],
 
   criarConversa: (primeiraMensagem: string) => {
     const id = Date.now().toString();
@@ -58,4 +62,10 @@ export const useChatStore = create<ChatState>((set, get) => ({
   apagarTodas: () => {
     set({ conversas: [] });
   },
-}));
+    }),
+    {
+      name: 'chat-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
