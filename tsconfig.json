@@ -9,7 +9,7 @@
       "@stores/*": ["stores/*"],
       "@hooks/*": ["hooks/*"],
       "@constants/*": ["constants/*"],
-      "@types/*": ["types/*"]
+      "@app-types/*": ["./shared-types/*"]
     }
   }
 }
